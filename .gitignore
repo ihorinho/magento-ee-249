@@ -1,0 +1,25 @@
+# Magento/Adobe Commerce: dependencies, generated code and local config
+/src/vendor/
+/src/generated/
+/src/var/
+/src/pub/static/*
+!/src/pub/static/.htaccess
+/src/pub/media/*
+!/src/pub/media/.htaccess
+/src/app/etc/env.php
+/src/auth.json
+/src/dev/tests/*/tmp/
+
+# TLS private keys and local CA
+/docker/nginx/certs/
+/docker/nginx/ca/
+
+# Local environment (copy from .env.example)
+/.env
+docker-compose.override.yml
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
