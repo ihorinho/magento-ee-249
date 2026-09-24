@@ -20,6 +20,7 @@ RUN apt-get update \
         xsl \
         zip \
         ftp \
+        igbinary \
         redis \
         @composer
 

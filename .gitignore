@@ -1,14 +1,23 @@
-# Magento/Adobe Commerce: dependencies, generated code and local config
-/src/vendor/
-/src/generated/
-/src/var/
-/src/pub/static/*
-!/src/pub/static/.htaccess
-/src/pub/media/*
-!/src/pub/media/.htaccess
-/src/app/etc/env.php
-/src/auth.json
-/src/dev/tests/*/tmp/
+# Magento/Adobe Commerce (Composer install).
+# Everything else under src/ is either installed by Composer (vendor/),
+# copied from magento/magento2-base and magento2-ee-base on every
+# `composer install` (bin/, dev/, lib/, pub/, setup/, app/etc/di.xml, ...),
+# generated at runtime (generated/, var/, pub/static/, pub/media/),
+# or local/secret (app/etc/env.php, auth.json). Track only project code/config.
+/src/*
+!/src/composer.json
+!/src/composer.lock
+!/src/patches/
+
+!/src/app/
+/src/app/*
+!/src/app/code/
+!/src/app/i18n/
+!/src/app/design/
+/src/app/design/*/Magento/
+!/src/app/etc/
+/src/app/etc/*
+!/src/app/etc/config.php
 
 # TLS private keys and local CA
 /docker/nginx/certs/
