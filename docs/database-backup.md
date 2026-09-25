@@ -56,3 +56,37 @@ docker compose exec -T db sh -c 'exec mariadb -uroot -p"$MARIADB_ROOT_PASSWORD" 
 ```
 
 Then run the restore commands above.
+
+## Media backup
+
+Product images and other uploads in `src/pub/media/` aren't in the database dump, so back them up separately. The archive leaves out generated files that Magento rebuilds on its own: resized image caches, `tmp`, `captcha` and the WYSIWYG `.thumbs` thumbnails.
+
+Run from the project root:
+
+```bash
+mkdir -p src/var/backups
+tar -czf src/var/backups/media-$(date +%F-%H%M).tar.gz -C src/pub \
+  --exclude='media/catalog/product/cache' --exclude='media/catalog/category/cache' \
+  --exclude='media/tmp' --exclude='media/captcha' --exclude='*/.thumbs' media
+```
+
+Images barely compress, so the archive is about the same size as the folder.
+
+Check the backup:
+
+```bash
+F=src/var/backups/media-<date>.tar.gz
+tar -tzf "$F" | grep -c .                    # number of entries
+tar -tzf "$F" | grep -c '/cache/'            # should print 0
+```
+
+### Restore media
+
+This extracts over `src/pub/media/`. Files that were added after the backup stay in place.
+
+```bash
+tar -xzf src/var/backups/media-<date>.tar.gz -C src/pub
+docker compose exec php bin/magento catalog:images:resize
+```
+
+`catalog:images:resize` rebuilds the resized image cache. If you skip it, Magento builds the images as pages load, which makes the first page views slower.
